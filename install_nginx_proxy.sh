@@ -18,7 +18,9 @@ scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no projet.$domain nftpixelfood@$ip
 echo "Move projet.$domain to the right place"
 
 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo cp ~/projet.$domain /etc/nginx/sites-available/projet.$domain"
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo ln -s /etc/nginx/sites-available/projet.$domain /etc/nginx/sites-enabled/"
+
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo unlink /etc/nginx/sites-enabled/default"
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo ln -s /etc/nginx/sites-available/projet.$domain /etc/nginx/sites-enabled//projet.$domain"
 
 echo "Reconfigure nginx"
 
@@ -26,7 +28,6 @@ ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx 'sudo se
 
 echo "Restart nginx"
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo systemctl restart nginx"
-
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo systemctl reload nginx"
 
 cd ..
