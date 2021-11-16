@@ -106,24 +106,9 @@ resource "google_storage_bucket" "test_app_static_site" {
     }
 
 }
-resource "google_storage_default_object_access_control" "public_rule" {
-    bucket = google_storage_bucket.test_app_static_site.name
-    role   = "READER"
-    entity = "allUsers"
-}
-
-resource "google_storage_object_acl" "index_acl" {
-  bucket      = google_storage_bucket.test_app_static_site.name
-  object      = google_storage_bucket_object.test_app_static_site_src.name
-  role_entity = ["READER:allUsers"]
-}
-resource "google_storage_bucket_object" "test_app_static_site_src" {
-    name   = "index.html"
-    source = "../test_app/public/index.html"
-    bucket = google_storage_bucket.test_app_static_site.name
-    depends_on = [
-        google_storage_default_object_access_control.public_rule,
-        google_storage_bucket.test_app_static_site
-    ]
+resource "google_storage_bucket_access_control" "public_rule" {
+  bucket = google_storage_bucket.test_app_static_site.name
+  role   = "READER"
+  entity = "allUsers"
 }
 

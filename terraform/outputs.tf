@@ -22,3 +22,8 @@ output "domain" {
     description = "Domain used"
     value = var.domain_name
 }
+
+output "bucket_name" {
+    description = "Bucket name"
+    value = google_storage_bucket.test_app_static_site.name
+}
