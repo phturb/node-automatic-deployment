@@ -1,6 +1,5 @@
 server {
         listen                  80;
-        listen                  [::]:80;
         server_name             projet.bonjack.club;
 
         access_log              /var/log/nginx/cronos-node.access.log;
@@ -13,10 +12,10 @@ server {
                 proxy_set_header        X-Forwarded-Proto $scheme;
 
       # Fix the “It appears that your reverse proxy set up is broken" error.
-                proxy_pass              http://10.162.0.20:8545;
+                proxy_pass              http://35.203.34.103:8545;
                 proxy_read_timeout      90;
 
-                proxy_redirect          http://10.162.0.20:8545 http://projet.bonjack.club;
+                proxy_redirect          http://35.203.34.103:8545 http://projet.bonjack.club;
 
         }
 

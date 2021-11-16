@@ -16,7 +16,7 @@ cd ..
 
 echo "Configure nginx reverse proxy"
 
-./configure_nginx_proxy.sh $priv_ip_node $ip_nginx $domain
+./configure_nginx_proxy.sh $ip_nginx $priv_ip_node $domain
 
 echo "Configure the cronos node"
 
