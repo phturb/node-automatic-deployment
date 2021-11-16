@@ -2,7 +2,7 @@ cd terraform
 
 # echo "Apply terraform"
 
-# terraform apply
+terraform apply
 
 echo "Fetching the information from terraform"
 
@@ -16,7 +16,7 @@ cd ..
 
 echo "Configure nginx reverse proxy"
 
-./coonfigure_nginx_proxy.sh $priv_ip_node $ip_nginx $domain
+./configure_nginx_proxy.sh $priv_ip_node $ip_nginx $domain
 
 echo "Configure the cronos node"
 

@@ -1,8 +1,16 @@
+sudo apt install jq
+
+mkdir cronos
+
+cd cronos
+
 curl -LOJ https://github.com/crypto-org-chain/cronos/releases/download/v0.6.1/cronos_0.6.1_Linux_x86_64.tar.gz
 
 tar -zxvf cronos_0.6.1_Linux_x86_64.tar.gz
 
 rm -f cronos_0.6.1_Linux_x86_64.tar.gz
+
+cd ..
 
 ./cronos/bin/cronosd init project-node-poly --chain-id cronosmainnet_25-1
 
@@ -15,6 +23,9 @@ sed -i.bak -E 's#^(persistent_peers[[:space:]]+=[[:space:]]+).*$#\1"0d5cf1394a1c
 sed -i.bak -E 's#^(create_empty_blocks_interval[[:space:]]+=[[:space:]]+).*$#\1"5s"#' ~/.cronos/config/config.toml
 
 sed -i.bak -E 's#^(timeout_commit[[:space:]]+=[[:space:]]+).*$#\1"5s"#' ~/.cronos/config/config.toml
+
+# export CRONOS_HOME=~/.cronos
+export PATH=$PATH:~/cronos/bin
 
 curl -s https://raw.githubusercontent.com/crypto-org-chain/cronos-docs/master/systemd/create-service.sh -o create-service.sh && curl -s https://raw.githubusercontent.com/crypto-org-chain/cronos-docs/master/systemd/ethermintd.service.template -o cronosd.service.template
 
