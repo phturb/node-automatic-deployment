@@ -14,20 +14,26 @@ sed -i "s/{{IP_NODE}}/$ip_node/" projet.$domain
 echo "Copying projet.$domain to the nginx server"
 
 scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no projet.$domain nftpixelfood@$ip_nginx:~/projet.$domain
+scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no install_nginx.sh nftpixelfood@$ip_nginx:~/install_nginx.sh
 
-echo "Move projet.$domain to the right place"
+echo "Execute remote installation script"
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo cp ~/projet.$domain /etc/nginx/sites-available/projet.$domain"
+ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo ~/install_nginx.sh projet.$domain"
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo unlink /etc/nginx/sites-enabled/default"
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo ln -s /etc/nginx/sites-available/projet.$domain /etc/nginx/sites-enabled/projet.$domain"
+# echo "Move projet.$domain to the right place"
 
-echo "Reconfigure nginx"
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo cp ~/projet.$domain /etc/nginx/sites-available/projet.$domain"
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx 'sudo sed -i "s/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 64;/" /etc/nginx/nginx.conf'
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo unlink /etc/nginx/sites-enabled/default"
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo rm /etc/nginx/sites-available/default"
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo ln -s /etc/nginx/sites-available/projet.$domain /etc/nginx/sites-enabled/projet.$domain"
 
-echo "Restart nginx"
+# echo "Reconfigure nginx"
 
-ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo systemctl restart nginx"
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx 'sudo sed -i "s/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 64;/" /etc/nginx/nginx.conf'
+
+# echo "Restart nginx"
+
+# ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no nftpixelfood@$ip_nginx "sudo systemctl restart nginx"
 
 cd ..
