@@ -9,11 +9,19 @@ data "google_dns_managed_zone" "domain_dns_zone" {
 }
 
 resource "google_dns_record_set" "nginx_record" {
-  name         = "project.${data.google_dns_managed_zone.domain_dns_zone.dns_name}"
+  name         = "${var.prefix_domain}.${data.google_dns_managed_zone.domain_dns_zone.dns_name}"
   type         = "A"
   ttl          = 300
   managed_zone = data.google_dns_managed_zone.domain_dns_zone.name
   rrdatas      = [google_compute_address.nginx_address.address]
+}
+
+resource "google_dns_record_set" "static_app" {
+  name         = "${var.prefix_domain_static}.${data.google_dns_managed_zone.domain_dns_zone.dns_name}"
+  type         = "CNAME"
+  ttl          = 300
+  managed_zone = data.google_dns_managed_zone.domain_dns_zone.name
+  rrdatas      = ["c.storage.googleapis.com."]
 }
 
 resource "google_compute_address" "nginx_address" {
@@ -32,7 +40,9 @@ resource "google_compute_instance" "cronos_node_vm" {
         }
     }
 
-    metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq git nginx"
+    tags = ["nginx", "node-firewall"]
+
+    metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq git jq"
 
     network_interface {
         network = "default"
@@ -89,8 +99,20 @@ resource "google_compute_firewall" "nginx_firewall" {
     target_tags = ["nginx-firewall"]
 }
 
+resource "google_compute_firewall" "node_firewall" {
+    name    = "node-firewall"
+    network = "default"
+
+    allow {
+        protocol = "tcp"
+        ports    = ["22", "8080", "26657", "8545"]
+    }
+
+    source_ranges = ["0.0.0.0/0"]
+    target_tags = ["node-firewall"]
+}
 resource "google_storage_bucket" "test_app_static_site" {
-    name = var.domain_name
+    name = "${var.prefix_domain_static}.${var.domain_name}"
     location = "us"
     force_destroy = true
     uniform_bucket_level_access = false
@@ -100,7 +122,7 @@ resource "google_storage_bucket" "test_app_static_site" {
     }
     cors {
         origin          = ["*"]
-        method          = ["GET", "HEAD", "PUT", "POST", "DELETE"]
+        method          = ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTION"]
         response_header = ["*"]
         max_age_seconds = 3600
     }

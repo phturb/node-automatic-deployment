@@ -33,6 +33,7 @@ chmod +x ./create-service.sh && ./create-service.sh
 
 sudo systemctl start cronosd
 
-sleep 5m
+# sleep 5m
+sleep 15s
 
 ./cronos/bin/cronosd status 2>&1 | jq '.SyncInfo.catching_up'

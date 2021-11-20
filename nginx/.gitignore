@@ -1,0 +1,4 @@
+*
+!.gitignore
+!install_nginx.sh
+!server_template.conf

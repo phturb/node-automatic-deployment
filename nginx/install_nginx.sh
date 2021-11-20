@@ -1,6 +1,11 @@
-echo "Move projet.$domain to the right place"
+echo "Move $1 to the right place"
 
-sudo cp ~/$1 /etc/nginx/sites-available/$1
+dir=$(pwd)
+
+sudo unlink /etc/nginx/sites-enabled/$1
+sudo rm /etc/nginx/sites-available/$1
+
+sudo cp $dir/$1 /etc/nginx/sites-available/$1
 
 sudo unlink /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default

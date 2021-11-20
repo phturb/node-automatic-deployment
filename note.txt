@@ -1,2 +1,1 @@
 https://cloud.google.com/storage/docs/domain-name-verification
-Fix access to the cloud bucket

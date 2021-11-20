@@ -37,3 +37,13 @@ variable "dns_zone_name" {
   type = string
   default = "bonjack"
 }
+
+variable "prefix_domain" {
+    type = string
+    default = "project"
+}
+
+variable "prefix_domain_static" {
+    type = string
+    default = "project-static"
+}

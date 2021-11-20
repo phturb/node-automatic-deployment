@@ -27,3 +27,8 @@ output "bucket_name" {
     description = "Bucket name"
     value = google_storage_bucket.test_app_static_site.name
 }
+
+output "prefix_domain" {
+    description = "Prefix domain"
+    value = var.prefix_domain
+}

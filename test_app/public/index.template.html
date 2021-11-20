@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test App</title>
+
+</head>
+
+<body>
+
+    <h1>Test App</h1>
+    <p>Under this section, the results of the node chain ID request will be shown. The id should be 25 (0x19)</p>
+
+    <div id="results"></div>
+
+</body>
+
+<script>
+    fetch("http://{{NODE_ADDRESS}}/", {
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": "{\"method\":\"eth_chainId\",\"params\":[],\"id\":108,\"jsonrpc\":\"2.0\"}",
+        "method": "POST"
+    }).then(res => res.text()).then(text => {
+        document.getElementById("results").innerHTML = text;
+    });
+</script>
+
+</html>
