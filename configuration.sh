@@ -32,4 +32,4 @@ echo "Configure static website"
 ./configure_static_website.sh $bucket_name $domain_prefix.$domain
 
 echo "Access node on : $domain_prefix.$domain"
-echo "Accss bucket on : $bucket_name"
+echo "Accss test app on : $bucket_name"
